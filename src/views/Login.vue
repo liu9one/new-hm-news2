@@ -19,8 +19,9 @@
     :rules="user.password"
   />
   <div style="margin: 16px;">
-    <van-button round block type="info" native-type="submit">提交</van-button>
+    <van-button round block type="info" native-type="submit">登录</van-button>
   </div>
+  <p class="tips">没有账号? <router-link to='/register'>去注册</router-link></p>
 </van-form>
   </div>
 </template>
@@ -32,6 +33,13 @@ import HmLogo from '../components/HmLogo.vue'
 export default {
 
   components: { HmHeader, HmLogo },
+
+  created () {
+    // console.log(this.$route)
+    const { password, username } = this.$route.params
+    this.username = username
+    this.password = password
+  },
   data () {
     return {
 
@@ -64,6 +72,13 @@ export default {
   }
 }
 </script>
-<style lang='less'>
-
+<style lang='less' scoped>
+.tips{
+  font-size: 14px;
+  text-align: right;
+  padding-right: 20px;
+  a{
+     color: orange;
+  }
+}
 </style>
