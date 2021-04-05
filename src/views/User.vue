@@ -34,6 +34,9 @@
       <template>设置</template>
       <template #content></template>
     </hm-navitem>
+    <div class="logout">
+      <van-button @click="logout" type="warning" block>退出</van-button>
+    </div>
 
   </div>
 </template>
@@ -42,24 +45,15 @@
 export default {
 
   async created () {
-    const token = localStorage.getItem('token')
     const userId = localStorage.getItem('userId')
     // console.log(token, userId)
-    const res = await this.$axios.get(`/user/${userId}`, {
-      headers: {
-        Authorization: token
-      }
-    })
+    const res = await this.$axios.get(`/user/${userId}`
+    )
     // console.log(res.data)
     const { statusCode, data } = res.data
     if (statusCode === 200) {
       this.user = data
       console.log(this.user)
-    } else if (statusCode === 401) {
-      this.$toast('验证失败')
-      this.$router.push('/login')
-      localStorage.removeItem('token')
-      localStorage.removeItem('userId')
     }
   },
   data () {
@@ -70,6 +64,22 @@ export default {
   computed: {
     base () {
       return this.$axios.defaults.baseURL
+    }
+  },
+  methods: {
+    async logout () {
+      try {
+        await this.$dialog.confirm({
+          title: '提示',
+          message: '您确定要退出吗?'
+        })
+        localStorage.removeItem('token')
+        localStorage.removeItem('userId')
+        this.$toast.success('已退出')
+        this.$router.push('/login')
+      } catch {
+
+      }
     }
   }
 }
@@ -108,6 +118,9 @@ export default {
     }
   }
 
+}
+.logout{
+  margin: 10px ;
 }
 
 </style>
