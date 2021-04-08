@@ -30,7 +30,7 @@
       <template>我的收藏</template>
       <template #content>文章/收藏</template>
     </hm-navitem>
-    <hm-navitem to='/edit'>
+    <hm-navitem to='/user-edit'>
       <template>设置</template>
       <template #content></template>
     </hm-navitem>
