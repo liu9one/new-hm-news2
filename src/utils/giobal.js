@@ -8,7 +8,9 @@ import HmNavitem from '../components/HmNavitem.vue'
 import Toast from 'vant'
 
 Vue.prototype.$axios = axios
-axios.defaults.baseURL = 'http://127.0.0.1:3000'
+const URL = 'http://127.0.0.1:3000'
+axios.defaults.baseURL = URL
+Vue.prototype.$base = URL
 // 请求拦截器和响应拦截器
 axios.interceptors.request.use(function (config) {
   const token = localStorage.getItem('token')
