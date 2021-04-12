@@ -67,7 +67,11 @@ export default {
         console.log(data)
         localStorage.setItem('token', data.token)
         localStorage.setItem('userId', data.user.id)
-        this.$router.push({ path: '/user' })
+        if (this.$route.query.back) {
+          this.$router.back()
+        } else {
+          this.$router.push({ path: '/' })
+        }
       } else {
         this.$toast.fail(message)
       }

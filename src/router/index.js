@@ -7,6 +7,10 @@ import User from '../views/User.vue'
 import UserEdit from '../views/UserEdit.vue'
 import Follow from '../views/Follow.vue'
 import MyComment from '../views/MyComment.vue'
+import MyStar from '../views/MyStar.vue'
+import Home from '../views/Home.vue'
+import Manage from '../views/Manage.vue'
+import PostDetail from '../views/PostDetail.vue'
 
 Vue.use(VueRouter)
 // 全局的把push的异常给处理了
@@ -17,11 +21,15 @@ Vue.use(VueRouter)
 
 const routes = [
   { path: '/login', component: Login, name: 'login' },
+  { path: '/', component: Home, name: 'home' },
   { path: '/register', component: Register, name: 'register' },
   { path: '/user', component: User, name: 'user' },
   { path: '/user-edit', component: UserEdit, name: 'user-edit' },
   { path: '/follow', component: Follow, name: 'follow' },
-  { path: '/my-comment', component: MyComment, name: 'my-comment' }
+  { path: '/my-comment', component: MyComment, name: 'my-comment' },
+  { path: '/my-star', component: MyStar, name: 'my-star' },
+  { path: '/manage', component: Manage, name: 'manage' },
+  { path: '/post-detail/:id', component: PostDetail, name: 'post-detail' }
 
 ]
 
@@ -31,7 +39,7 @@ const router = new VueRouter({
 
 router.beforeEach(function (to, from, next) {
   const token = localStorage.getItem('token')
-  const topath = ['/user', '/user-edit', 'follow']
+  const topath = ['/user', '/user-edit', '/follow', '/my-comment', '/my-star']
   if (!topath.includes(to.path) || token) {
     next()
   } else {

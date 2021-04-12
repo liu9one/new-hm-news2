@@ -11,6 +11,8 @@ import './utils/giobal'
 import './utils/filter'
 // 引入vant
 import './utils/vant'
+// 引入请求部分
+import './utils/request'
 
 Vue.config.productionTip = false
 
