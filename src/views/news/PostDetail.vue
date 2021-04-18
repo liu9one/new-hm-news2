@@ -43,11 +43,16 @@
     </div>
 
     <!-- 底部区域 -->
-        <div class="footer">
+    <div class="footer-textrea" v-if="isshowTextarea">
+      <textarea :placeholder="'回复:' + nickname
+       " v-model="content" @blur="onBlur" ref="textarea"></textarea>
+      <van-button type="info" @click="pubilsh">发送</van-button>
+    </div>
+    <div class="footer-text" v-else>
       <div class="search">
-        <input type="text" placeholder="回复">
+        <input type="text"  @focus='onFocus' placeholder="回复">
       </div>
-      <span class="iconfont iconpinglun-"><i>20</i></span>
+      <span class="iconfont iconpinglun-"><i>{{post.comment_length}}</i></span>
       <span class="iconfont iconshoucang" :class="{now: post.has_star}" @click="star"></span>
       <span class="iconfont iconfenxiang"></span>
     </div>
@@ -59,13 +64,22 @@ export default {
   created () {
     this.getInfo()
     this.getCommentList()
+    // bus事件
+    this.$bus.$on('reply', this.onReply)
+  },
+  destroyed () {
+    this.$bus.$off('reply', this.onReply)
   },
   data () {
     return {
       post: {
         user: {}
       },
-      commentList: []
+      commentList: [],
+      isshowTextarea: false,
+      content: '',
+      replyId: '',
+      nickname: ''
     }
   },
   methods: {
@@ -139,7 +153,51 @@ export default {
       if (res.data.statusCode === 200) {
         this.getInfo()
       }
+    },
+    // 底部回复
+    async onFocus () {
+      this.isshowTextarea = true
+
+      await this.$nextTick()
+      this.$refs.textarea.focus()
+    },
+    onBlur () {
+      if (!this.content) {
+        this.isshowTextarea = false
+        this.nickname = ''
+        this.replyId = ''
+      // this.content = ''
+      }
+    },
+    async pubilsh () {
+      if (this.content.trim() !== '') {
+        const res = await this.$axios.post(`/post_comment/${this.post.id}`, {
+          content: this.content,
+          parent_id: this.replyId
+        })
+        const { statusCode, message } = res.data
+        if (statusCode === 200) {
+          this.$toast.success(message)
+          this.content = ''
+          this.replyId = ''
+          this.nickname = ''
+          this.isshowTextarea = false
+          this.getInfo()
+          this.getCommentList()
+        }
+      } else {
+        return this.$toast('回复不能为空')
+      }
+    },
+    async onReply (id, nickname) {
+      console.log(id, nickname)
+      this.isshowTextarea = true
+      await this.$nextTick()
+      this.$refs.textarea.focus()
+      this.nickname = '@' + nickname
+      this.replyId = id
     }
+
   }
 }
 </script>
@@ -180,6 +238,7 @@ export default {
     }
 }
 .content{
+
   padding: 10px;
   border-bottom: 3px #ccc solid;
   .post-content{
@@ -227,7 +286,13 @@ export default {
   }
 
 }
-.footer{
+.comment-list{
+  h3{
+    text-align: center;
+    padding: 10px;
+  }
+}
+.footer-text{
   background-color: #fff;
   width: 100%;
   height: 50px;
@@ -272,6 +337,32 @@ export default {
       padding-left: 20px;
     }
   }
+}
+.footer-textrea{
+  width: 100%;
+  height:100px;
+  padding: 10px;
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end;
+  position: fixed;
+  bottom: 0;
+  border-top: 1px #ccc solid;
+  background-color: #fff;
+  z-index: 999;
+  textarea{
+    width: 260px;
+    height: 80px;
+    padding: 10px;
+    font-size: 14px;
+    text-indent: 1.5em;
+    border-radius: 10px;
+    background-color: #ccc;
+    border: none;
+  }
+}
+.post-detail{
+  padding-bottom: 100px;
 }
 
 /deep/.ql-video{

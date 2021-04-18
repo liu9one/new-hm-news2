@@ -27,12 +27,8 @@
 </template>
 
 <script>
-import HmHeader from '../components/HmHeader.vue'
-import HmLogo from '../components/HmLogo.vue'
 
 export default {
-
-  components: { HmHeader, HmLogo },
 
   created () {
     // console.log(this.$route)

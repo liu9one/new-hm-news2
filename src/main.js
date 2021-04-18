@@ -14,6 +14,9 @@ import './utils/vant'
 // 引入请求部分
 import './utils/request'
 
+const bus = new Vue()
+Vue.prototype.$bus = bus
+
 Vue.config.productionTip = false
 
 new Vue({

@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import axios from 'axios'
 import router from '../router'
-import Toast from 'vant'
+import { Toast } from 'vant'
 
 Vue.prototype.$axios = axios
 const URL = 'http://127.0.0.1:3000'

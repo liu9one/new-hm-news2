@@ -23,8 +23,8 @@
         <div class="content">
          {{item.content}}
         </div>
-        <div class="origin txt-cut one-txt-cut">
-          {{item.post.title}}
+        <div class="origin txt-cut one-txt-cut" @click="$router.push(`/post-detail/${item.id}`)">
+         原文: {{item.post.title}}
         </div>
       </div>
       </van-list>

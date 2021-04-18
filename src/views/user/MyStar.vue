@@ -1,21 +1,7 @@
 <template>
   <div class="my-star">
    <hm-header>我的收藏</hm-header>
-   <div class="item" v-for="item in list" :key="item.id">
-     <div class="info">
-       <div class="title">
-         {{item.title}}
-       </div>
-       <div class="user">
-         <span>{{item.user.nickname}}</span>
-         &nbsp;&nbsp;
-         <span>{{item.comments.length}}回复</span>
-       </div>
-     </div>
-     <div class="img">
-       <img :src="$url(item.cover[0].url)" alt="">
-     </div>
-   </div>
+   <news-post v-for="item in list" :key="item.id" :post='item'></news-post>
   </div>
 </template>
 

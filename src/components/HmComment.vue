@@ -9,9 +9,9 @@
         <p>{{comment.user.nickname}}</p>
         <p>{{comment.create_date | now}}</p>
       </div>
-      <div class="right">回复</div>
+      <div class="right" @click="reply">回复</div>
     </div>
-    <hm-floor :comment='comment.parent' v-if="comment.parent"></hm-floor>
+    <hm-floor :count='count' :comment='comment.parent' v-if="comment.parent"></hm-floor>
     <div class="content">{{comment.content}}</div>
 
   </div>
@@ -21,6 +21,23 @@
 export default {
   props: {
     comment: Object
+  },
+  data () {
+    return {
+      count: this.getCount(0, this.comment)
+    }
+  },
+  methods: {
+    getCount (num, data) {
+      if (data.parent) {
+        return this.getCount(num + 1, data.parent)
+      } else {
+        return num
+      }
+    },
+    reply () {
+      this.$bus.$emit('reply', this.comment.id, this.comment.user.nickname)
+    }
   }
 
 }
